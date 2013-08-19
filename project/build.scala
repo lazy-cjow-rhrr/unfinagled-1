@@ -83,14 +83,25 @@ object Shared {
             <url>http://www.thegodcode.net/</url>
           </developer>
         </developers>),
-    publishTo <<= version { (v: String) =>
-      val nexus = "https://oss.sonatype.org/"
-      if (v.trim.endsWith("SNAPSHOT"))
-        Some("snapshots" at nexus + "content/repositories/snapshots")
-      else
-        Some("releases"  at nexus + "service/local/staging/deploy/maven2")
+//    publishTo <<= version { (v: String) =>
+//      val nexus = "https://oss.sonatype.org/"
+//      if (v.trim.endsWith("SNAPSHOT"))
+//        Some("snapshots" at nexus + "content/repositories/snapshots")
+//      else
+//        Some("releases"  at nexus + "service/local/staging/deploy/maven2")
+//    },
+    publishTo <<= (version) { version: String =>
+    val nexus = "http://nexus.tapad.com:8080/nexus/content/repositories/"
+    if (version.trim.endsWith("SNAPSHOT") || version.trim.endsWith("TAPAD"))
+      Some("snapshots" at (nexus + "snapshots/"))
+    else
+      Some("releases" at (nexus + "releases/"))
     },
-    credentials += Credentials(Path.userHome / ".ivy2" / ".sonatype")
+    publishMavenStyle := true,
+    publishArtifact in Test := false,
+    pomIncludeRepository := { _ => false },
+    credentials += Credentials(Path.userHome / ".ivy2" / ".credentials")
+    //credentials += Credentials(Path.userHome / ".ivy2" / ".sonatype")
   ) ++ net.virtualvoid.sbt.graph.Plugin.graphSettings ++ Format.settings
   
 }
