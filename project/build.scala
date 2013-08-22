@@ -92,7 +92,7 @@ object Shared {
 //    },
     publishTo <<= (version) { version: String =>
     val nexus = "http://nexus.tapad.com:8080/nexus/content/repositories/"
-    if (version.trim.endsWith("SNAPSHOT") || version.trim.endsWith("TAPAD"))
+    if (version.trim.endsWith("SNAPSHOT") )
       Some("snapshots" at (nexus + "snapshots/"))
     else
       Some("releases" at (nexus + "releases/"))
